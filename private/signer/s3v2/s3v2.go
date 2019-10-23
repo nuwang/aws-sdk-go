@@ -130,9 +130,11 @@ func (v2 *signer) buildCanonicalizedResource() {
 	// This is terrible, but host and path seem to never bet set,
 	// so we are always going back to the opaque to figure these out
 	// better way?  must be?
-	if v2.Request.Host == "" {
-		v2.Request.Host = strings.Split(v2.Request.URL.Opaque, "/")[2]
-	}
+    fmt.Println("########## Host" + v2.Request.Host)
+
+	//if v2.Request.Host == "" {
+	//	v2.Request.Host = strings.Split(v2.Request.URL.Opaque, "/")[2]
+	//}
 	if v2.Request.URL.Path == "" {
 		v2.Request.URL.Path = "/" + strings.Join(strings.Split(v2.Request.URL.Opaque, "/")[3:], "/")
 	}
