@@ -7,8 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go/aws/client"
 	"github.com/aws/aws-sdk-go/aws/client/metadata"
 	"github.com/aws/aws-sdk-go/aws/request"
-	"github.com/aws/aws-sdk-go/aws/signer/v4"
+    //"github.com/aws/aws-sdk-go/aws/signer/v4"
+    "github.com/aws/aws-sdk-go/private/signer/s3v2"
 	"github.com/aws/aws-sdk-go/private/protocol/restxml"
+    "fmt"
 )
 
 // S3 provides the API operation methods for making requests to
@@ -67,9 +69,11 @@ func newClient(cfg aws.Config, handlers request.Handlers, endpoint, signingRegio
 	}
 
 	// Handlers
-	svc.Handlers.Sign.PushBackNamed(v4.BuildNamedHandler(v4.SignRequestHandler.Name, func(s *v4.Signer) {
-		s.DisableURIPathEscaping = true
-	}))
+    //svc.Handlers.Sign.PushBackNamed(v4.BuildNamedHandler(v4.SignRequestHandler.Name, func(s *v4.Signer) {
+	//	s.DisableURIPathEscaping = true
+	//}))
+    fmt.Println("########## UsingS3v2 handler")
+    svc.Handlers.Sign.PushBackNamed(s3v2.SignRequestHandler)
 	svc.Handlers.Build.PushBackNamed(restxml.BuildHandler)
 	svc.Handlers.Unmarshal.PushBackNamed(restxml.UnmarshalHandler)
 	svc.Handlers.UnmarshalMeta.PushBackNamed(restxml.UnmarshalMetaHandler)
